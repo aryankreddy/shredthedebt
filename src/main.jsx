@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   ArrowUpRight,
@@ -463,7 +463,7 @@ function App() {
         </a>
         <div className="nav-links" aria-label="Primary navigation">
           <a href="#team">Team</a>
-          <a href="#toolkit">Toolkit</a>
+          <a href="#toolkit">Initiatives</a>
           <a href="#playbook">Resources</a>
         </div>
         <a className="donate-button" href={DONATE_URL} target="_blank" rel="noreferrer">
@@ -963,15 +963,35 @@ function LineGroup({ label, tone, values, onChange }) {
     <div className="line-group">
       <span className={tone}>{label}</span>
       {values.map((value, index) => (
-        <textarea
+        <AutoGrowTextarea
           key={`${label}-${index}`}
           value={value}
           aria-label={`${label} ${index + 1}`}
-          rows={1}
           onChange={(event) => onChange(index, event.target.value)}
         />
       ))}
     </div>
+  );
+}
+
+function AutoGrowTextarea({ value, onChange, ...props }) {
+  const textareaRef = useRef(null);
+
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+    textarea.style.height = "0px";
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  }, [value]);
+
+  return (
+    <textarea
+      {...props}
+      ref={textareaRef}
+      rows={1}
+      value={value}
+      onChange={onChange}
+    />
   );
 }
 

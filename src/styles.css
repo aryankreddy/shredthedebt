@@ -614,6 +614,10 @@ textarea {
   padding: 20px;
 }
 
+.member-card-wide {
+  grid-column: 1 / -1;
+}
+
 .member-name {
   margin: 0;
   border-bottom: 2px solid var(--line);

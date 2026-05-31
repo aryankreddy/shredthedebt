@@ -38,11 +38,19 @@ const initiativeOptions = [
 ];
 
 const makeTeam = () =>
-  teamNames.map((name) => ({
-    id: name.toLowerCase(),
-    name,
-    actionItems: ["", "", "", "", "", ""],
-  }));
+  [
+    {
+      id: "team",
+      name: "Team",
+      actionItems: ["", "", "", "", "", ""],
+      wide: true,
+    },
+    ...teamNames.map((name) => ({
+      id: name.toLowerCase(),
+      name,
+      actionItems: ["", "", "", "", "", ""],
+    })),
+  ];
 
 const makeOutreachTracker = () =>
   Array.from({ length: 50 }, (_, index) => ({
@@ -496,7 +504,7 @@ function App() {
             />
             <div className="team-grid">
               {state.team.map((member, memberIndex) => (
-                <article className="member-card" key={member.id}>
+                <article className={`member-card ${member.wide ? "member-card-wide" : ""}`} key={member.id}>
                   <h3 className="member-name">{member.name}</h3>
                   <LineGroup
                     label="Action Items"

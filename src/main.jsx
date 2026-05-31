@@ -963,10 +963,11 @@ function LineGroup({ label, tone, values, onChange }) {
     <div className="line-group">
       <span className={tone}>{label}</span>
       {values.map((value, index) => (
-        <input
+        <textarea
           key={`${label}-${index}`}
           value={value}
           aria-label={`${label} ${index + 1}`}
+          rows={1}
           onChange={(event) => onChange(index, event.target.value)}
         />
       ))}

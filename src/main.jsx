@@ -89,91 +89,29 @@ const linkedInTemplates = [
   {
     tag: "Template 1",
     icon: Target,
-    body: `I'm helping Global Shapers Austin raise funds for Shred The Debt, a medical debt relief campaign with Undue Medical Debt.
-
-Every $1 donated erases about $100 of medical debt for families in need.
-
-If this resonates, please consider donating or sharing with someone who might want to support:
-${DONATE_URL}`,
+    body: "",
   },
 ];
-
-const partnershipEmail = `Subject: Partner with Global Shapers Austin - Erase Local Medical Debt
-
-Hi [Name],
-
-I'm [Your Name] with Global Shapers Austin, a volunteer hub under the World Economic Forum.
-We've launched "Shred the Debt," a campaign that erases medical debt for Austin-area families
-- every $1 raised wipes out ~$100 of debt.
-
-We're looking for community-minded businesses to partner with us. A few low-lift options:
-
-- Give-back night - you donate a % of sales (typically 10-25%) on a chosen evening;
-  we bring the crowd and promote you across our network.
-- Round-up or featured item - a small donation per transaction, or proceeds from
-  one menu item over a set period.
-- Matching moment - you match donations up to a set cap during a campaign push.
-
-In return, we'll spotlight your business across our channels as a founding local partner.
-Donations are 100% tax-deductible through our nonprofit partner, Undue Medical Debt.
-
-Could I grab 15 minutes to talk through what might fit?
-
-[Your Name] - [Phone] - [Email]
-${DONATE_URL}`;
 
 const businessTemplates = [
   {
     tag: "Template 1",
-    body: partnershipEmail,
+    body: "",
   },
   {
     tag: "Template 2",
-    body: `Subject: Host a Give-Back Night for Shred The Debt
-
-Hi [Name],
-
-I'm [Your Name] with Global Shapers Austin. We're running Shred The Debt, a campaign with Undue Medical Debt where every $1 donated erases about $100 of medical debt for families in need.
-
-We're reaching out to Austin businesses about simple give-back partnerships. Would you be open to hosting one night where a percentage of sales supports the campaign?
-
-We would help promote the date, bring our network, and spotlight your business as a local partner.
-
-Happy to make this easy and work around whatever format already fits your team.
-
-[Your Name] - [Phone] - [Email]
-${DONATE_URL}`,
+    body: "",
   },
 ];
 
 const restaurantTemplates = [
   {
     tag: "Profit Share",
-    body: `Subject: Give-Back Night Partnership for Shred The Debt
-
-Hi [Name],
-
-I'm [Your Name] with Global Shapers Austin. We're running Shred The Debt, a campaign with Undue Medical Debt where every $1 raised erases about $100 of medical debt.
-
-Would [Restaurant Name] be open to hosting a give-back night where a percentage of sales supports the campaign?
-
-We can help promote the date, bring our network, and make it easy for people to show up and support.
-
-[Your Name]`,
+    body: "",
   },
   {
     tag: "Partnership Inquiry",
-    body: `Subject: Community Fundraiser Idea with Global Shapers Austin
-
-Hi [Name],
-
-I wanted to reach out about a simple community fundraiser. Our Austin Hub is raising money to erase medical debt for families in need, and local food partners are a great fit.
-
-Would you be open to discussing a profit-share night, featured item, or round-up option?
-
-Happy to work around whatever format is easiest for your team.
-
-[Your Name]`,
+    body: "",
   },
 ];
 
@@ -203,41 +141,15 @@ const resources = [
 const schoolNetworkTemplates = [
   {
     tag: "Template 1",
-    body: `Hi [Name],
-
-I'm part of Global Shapers Austin, and we're running Shred The Debt to erase medical debt for families in need.
-
-Would [Organization/Group Name] be open to sharing our campaign with members or including it in an upcoming newsletter?
-
-Every $1 raised erases about $100 of medical debt.
-
-${DONATE_URL}`,
+    body: "",
   },
   {
     tag: "Template 2",
-    body: `Subject: Partner on a Medical Debt Relief Campaign
-
-Hi [Name],
-
-I'm reaching out from Global Shapers Austin. We're looking for student groups, alumni networks, and professional communities that may want to support our Shred The Debt campaign.
-
-A simple share, matching challenge, or group fundraising push could make a meaningful impact.
-
-Would you be open to a quick conversation?
-
-[Your Name]`,
+    body: "",
   },
   {
     tag: "Template 3",
-    body: `Hi [Name],
-
-Would your network be open to doing a small fundraising sprint for medical debt relief?
-
-Global Shapers Austin is partnering with Undue Medical Debt, and every $10 raised can erase about $1,000 of debt.
-
-I can send over a short blurb and campaign link if helpful.
-
-[Your Name]`,
+    body: "",
   },
 ];
 

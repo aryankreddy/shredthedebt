@@ -6,7 +6,6 @@ Internal campaign dashboard for Global Shapers Austin's Shred the Debt medical d
 
 - Fundraising total, goal, and debt-erased calculator
 - Copyable personal outreach and small-business partnership templates
-- Editable corporate sponsorship guide
 - Eight-member action items board
 - Austin fundraising playbook with click-to-cycle statuses
 - Live campaign raised/goal totals pulled from the Undue Medical Debt campaign page

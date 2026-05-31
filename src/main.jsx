@@ -6,7 +6,6 @@ import {
   Clipboard,
   ExternalLink,
   HandHeart,
-  Mail,
   Target,
   Trash2,
 } from "lucide-react";
@@ -16,14 +15,6 @@ import shredLogo from "./assets/shred-the-debt-logo.webp";
 const DONATE_URL =
   "https://unduemedicaldebt.org/campaign/globalshapersaustin-69821/";
 const STORAGE_KEY = "shred-the-debt-austin-hub-v1";
-
-const defaultCorporate = `[ Your corporate sponsorship guide lives here - editable, saves automatically. ]
-
-Suggested structure:
-- Target companies (Austin HQ / strong CSR): ...
-- Sponsorship tiers ($ -> what they get): ...
-- The ask + matching-gift angle: ...
-- Point of contact + follow-up cadence: ...`;
 
 const teamNames = ["Aryan", "Ben", "Atiya", "Melanie", "Ryan", "Arvin", "Arjun", "Aaliyah"];
 const initiativeOptions = [
@@ -69,7 +60,6 @@ const defaultState = {
   outreachTracker: makeOutreachTracker(),
   customCards: [],
   templateOverrides: {},
-  corporate: defaultCorporate,
   statuses: {},
 };
 
@@ -578,20 +568,6 @@ function App() {
 
             <div className="initiative-section">
               <h3>Corporate/Institutional</h3>
-              <article className="resource-card corporate-guide">
-                <div className="card-topline">
-                  <span>Corporate Sponsorship Guide</span>
-                  <Mail size={18} />
-                </div>
-                <p>Your space to type or paste the guide. Auto-saves as the board evolves.</p>
-                <textarea
-                  value={state.corporate}
-                  onChange={(event) =>
-                    setState((current) => ({ ...current, corporate: event.target.value }))
-                  }
-                  aria-label="Corporate sponsorship guide"
-                />
-              </article>
               {renderCustomCards("Corporate/Institutional")}
               <AddCardControl initiative="Corporate/Institutional" onAdd={addCustomCard} />
             </div>

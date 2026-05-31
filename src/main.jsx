@@ -8,6 +8,7 @@ import {
   HandHeart,
   Mail,
   Target,
+  Trash2,
 } from "lucide-react";
 import "./styles.css";
 import shredLogo from "./assets/shred-the-debt-logo.webp";
@@ -348,6 +349,13 @@ function App() {
     }));
   };
 
+  const deleteCustomCard = (id) => {
+    setState((current) => ({
+      ...current,
+      customCards: current.customCards.filter((card) => card.id !== id),
+    }));
+  };
+
   const renderCustomCards = (initiative) => {
     const cards = state.customCards.filter((card) => card.initiative === initiative);
     if (!cards.length) return null;
@@ -360,6 +368,7 @@ function App() {
             copied={copied === card.id}
             key={card.id}
             onCopy={() => copyText(card.id, card.body || "")}
+            onDelete={() => deleteCustomCard(card.id)}
             onUpdate={(patch) => updateCustomCard(card.id, patch)}
           />
         ))}
@@ -804,7 +813,7 @@ function AddCardControl({ initiative, onAdd }) {
   );
 }
 
-function CustomInitiativeCard({ card, copied, onCopy, onUpdate }) {
+function CustomInitiativeCard({ card, copied, onCopy, onDelete, onUpdate }) {
   const [isEditing, setIsEditing] = useState(!card.body && !card.fileData);
   const [draft, setDraft] = useState(card);
 
@@ -866,30 +875,43 @@ function CustomInitiativeCard({ card, copied, onCopy, onUpdate }) {
         </div>
       </div>
 
-      {isEditing ? (
-        <div className="template-edit-stack">
-          <label>
-            <span>Title</span>
-            <input
-              value={draft.title || ""}
-              onChange={(event) =>
-                setDraft((current) => ({ ...current, title: event.target.value }))
-              }
-              aria-label={`${card.title} title`}
-            />
-          </label>
-          {card.type === "artifact" ? (
-            <>
+      <div className="custom-card-body">
+        {isEditing ? (
+          <div className="template-edit-stack">
+            <label>
+              <span>Title</span>
+              <input
+                value={draft.title || ""}
+                onChange={(event) =>
+                  setDraft((current) => ({ ...current, title: event.target.value }))
+                }
+                aria-label={`${card.title} title`}
+              />
+            </label>
+            {card.type === "artifact" ? (
+              <>
+                <label>
+                  <span>Upload</span>
+                  <input
+                    accept="image/*,.pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.csv,.txt"
+                    onChange={(event) => handleFile(event.target.files?.[0])}
+                    type="file"
+                  />
+                </label>
+                <label>
+                  <span>Notes</span>
+                  <textarea
+                    className="template-editor"
+                    value={draft.body || ""}
+                    onChange={(event) =>
+                      setDraft((current) => ({ ...current, body: event.target.value }))
+                    }
+                  />
+                </label>
+              </>
+            ) : (
               <label>
-                <span>Upload</span>
-                <input
-                  accept="image/*,.pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.csv,.txt"
-                  onChange={(event) => handleFile(event.target.files?.[0])}
-                  type="file"
-                />
-              </label>
-              <label>
-                <span>Notes</span>
+                <span>{card.type === "note" ? "Note" : "Template"}</span>
                 <textarea
                   className="template-editor"
                   value={draft.body || ""}
@@ -898,23 +920,20 @@ function CustomInitiativeCard({ card, copied, onCopy, onUpdate }) {
                   }
                 />
               </label>
-            </>
-          ) : (
-            <label>
-              <span>{card.type === "note" ? "Note" : "Template"}</span>
-              <textarea
-                className="template-editor"
-                value={draft.body || ""}
-                onChange={(event) =>
-                  setDraft((current) => ({ ...current, body: event.target.value }))
-                }
-              />
-            </label>
-          )}
-        </div>
-      ) : (
-        <CustomCardDisplay card={card} />
-      )}
+            )}
+          </div>
+        ) : (
+          <CustomCardDisplay card={card} />
+        )}
+      </div>
+      <button
+        aria-label={`Delete ${card.title || cardTypeLabels[card.type]}`}
+        className="delete-card-button"
+        onClick={onDelete}
+        type="button"
+      >
+        <Trash2 size={13} />
+      </button>
     </article>
   );
 }

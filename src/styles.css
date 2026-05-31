@@ -345,7 +345,7 @@ a {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 6px;
 }
 
 .copy-card p {
@@ -367,9 +367,9 @@ a {
   background: var(--surface);
   color: var(--navy);
   cursor: pointer;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  padding: 9px 11px;
+  padding: 6px 8px;
 }
 
 .primary-action {
@@ -419,6 +419,33 @@ a {
 .custom-card-display {
   display: grid;
   gap: 12px;
+}
+
+.custom-initiative-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+}
+
+.custom-card-body {
+  flex: 1;
+}
+
+.delete-card-button {
+  align-self: flex-end;
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  cursor: pointer;
+  line-height: 1;
+  margin-top: 12px;
+  opacity: 0.7;
+  padding: 4px;
+}
+
+.delete-card-button:hover {
+  color: #b42318;
+  opacity: 1;
 }
 
 .custom-card-display h4 {

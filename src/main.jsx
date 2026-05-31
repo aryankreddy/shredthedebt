@@ -59,9 +59,16 @@ const defaultState = {
   raised: 0,
   team: makeTeam(),
   outreachTracker: makeOutreachTracker(),
+  customCards: [],
   templateOverrides: {},
   corporate: defaultCorporate,
   statuses: {},
+};
+
+const cardTypeLabels = {
+  messaging: "Messaging Template",
+  note: "Notecard",
+  artifact: "Artifact",
 };
 
 const outreachTemplates = [
@@ -180,6 +187,7 @@ function normalizeState(parsed = {}) {
             };
           })
         : defaultState.outreachTracker,
+    customCards: Array.isArray(parsed.customCards) ? parsed.customCards : [],
     templateOverrides: parsed.templateOverrides || {},
     statuses: parsed.statuses || {},
   };
@@ -309,6 +317,54 @@ function App() {
         index === rowIndex ? { ...row, [field]: value } : row,
       ),
     }));
+  };
+
+  const addCustomCard = (initiative, type) => {
+    const id = `custom-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    setState((current) => ({
+      ...current,
+      customCards: [
+        ...current.customCards,
+        {
+          id,
+          initiative,
+          type,
+          title: cardTypeLabels[type],
+          body: "",
+          fileData: "",
+          fileName: "",
+          fileType: "",
+        },
+      ],
+    }));
+  };
+
+  const updateCustomCard = (id, patch) => {
+    setState((current) => ({
+      ...current,
+      customCards: current.customCards.map((card) =>
+        card.id === id ? { ...card, ...patch } : card,
+      ),
+    }));
+  };
+
+  const renderCustomCards = (initiative) => {
+    const cards = state.customCards.filter((card) => card.initiative === initiative);
+    if (!cards.length) return null;
+
+    return (
+      <div className="custom-card-grid">
+        {cards.map((card) => (
+          <CustomInitiativeCard
+            card={card}
+            copied={copied === card.id}
+            key={card.id}
+            onCopy={() => copyText(card.id, card.body || "")}
+            onUpdate={(patch) => updateCustomCard(card.id, patch)}
+          />
+        ))}
+      </div>
+    );
   };
 
   const getTemplateOverride = (id) => {
@@ -473,6 +529,8 @@ function App() {
               <div className="outreach-grid single-template-grid">
                 {linkedInTemplates.map((template) => renderTemplateCard("linkedin", template))}
               </div>
+              {renderCustomCards("Outreach")}
+              <AddCardControl initiative="Outreach" onAdd={addCustomCard} />
             </div>
 
             <div className="initiative-section">
@@ -480,6 +538,8 @@ function App() {
               <div className="outreach-grid">
                 {restaurantTemplates.map((template) => renderTemplateCard("restaurant", template))}
               </div>
+              {renderCustomCards("Restaurants & Food Partnerships")}
+              <AddCardControl initiative="Restaurants & Food Partnerships" onAdd={addCustomCard} />
             </div>
 
             <div className="initiative-section">
@@ -489,14 +549,20 @@ function App() {
                   renderTemplateCard("business", template, { variant: "resource" })
                 ))}
               </div>
+              {renderCustomCards("Small Business Partnerships")}
+              <AddCardControl initiative="Small Business Partnerships" onAdd={addCustomCard} />
             </div>
 
             <div className="initiative-section">
               <h3>Events</h3>
+              {renderCustomCards("Events")}
+              <AddCardControl initiative="Events" onAdd={addCustomCard} />
             </div>
 
             <div className="initiative-section">
               <h3>Community Involvement</h3>
+              {renderCustomCards("Community Involvement")}
+              <AddCardControl initiative="Community Involvement" onAdd={addCustomCard} />
             </div>
 
             <div className="initiative-section">
@@ -515,6 +581,8 @@ function App() {
                   aria-label="Corporate sponsorship guide"
                 />
               </article>
+              {renderCustomCards("Corporate/Institutional")}
+              <AddCardControl initiative="Corporate/Institutional" onAdd={addCustomCard} />
             </div>
 
             <div className="initiative-section">
@@ -524,10 +592,14 @@ function App() {
                   renderTemplateCard("school-network", template)
                 ))}
               </div>
+              {renderCustomCards("School + Professional Network")}
+              <AddCardControl initiative="School + Professional Network" onAdd={addCustomCard} />
             </div>
 
             <div className="initiative-section">
               <h3>Media & Advertising</h3>
+              {renderCustomCards("Media & Advertising")}
+              <AddCardControl initiative="Media & Advertising" onAdd={addCustomCard} />
             </div>
 
             <article className="resource-card outreach-tracker">
@@ -708,6 +780,160 @@ function EditableTemplateCard({
         <p>{body}</p>
       )}
     </article>
+  );
+}
+
+function AddCardControl({ initiative, onAdd }) {
+  const [type, setType] = useState("messaging");
+
+  return (
+    <div className="add-card-control">
+      <select
+        value={type}
+        onChange={(event) => setType(event.target.value)}
+        aria-label={`Card type for ${initiative}`}
+      >
+        <option value="messaging">Messaging Template</option>
+        <option value="note">Notecard</option>
+        <option value="artifact">Artifact</option>
+      </select>
+      <button className="ghost-button" type="button" onClick={() => onAdd(initiative, type)}>
+        Add Card
+      </button>
+    </div>
+  );
+}
+
+function CustomInitiativeCard({ card, copied, onCopy, onUpdate }) {
+  const [isEditing, setIsEditing] = useState(!card.body && !card.fileData);
+  const [draft, setDraft] = useState(card);
+
+  useEffect(() => {
+    setDraft(card);
+  }, [card]);
+
+  const save = () => {
+    onUpdate(draft);
+    setIsEditing(false);
+  };
+
+  const cancel = () => {
+    setDraft(card);
+    setIsEditing(false);
+  };
+
+  const handleFile = (file) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      setDraft((current) => ({
+        ...current,
+        fileData: reader.result,
+        fileName: file.name,
+        fileType: file.type,
+      }));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  return (
+    <article className="resource-card custom-initiative-card">
+      <div className="card-topline">
+        <span>{cardTypeLabels[card.type]}</span>
+        <div className="template-actions">
+          {isEditing ? (
+            <>
+              <button className="ghost-button" type="button" onClick={cancel}>
+                Cancel
+              </button>
+              <button className="ghost-button primary-action" type="button" onClick={save}>
+                Save
+              </button>
+            </>
+          ) : (
+            <>
+              <button className="ghost-button" type="button" onClick={() => setIsEditing(true)}>
+                Edit
+              </button>
+              {card.type === "messaging" ? (
+                <button className="ghost-button" type="button" onClick={onCopy}>
+                  {copied ? <Check size={16} /> : <Clipboard size={16} />}
+                  {copied ? "Copied" : "Copy"}
+                </button>
+              ) : null}
+            </>
+          )}
+        </div>
+      </div>
+
+      {isEditing ? (
+        <div className="template-edit-stack">
+          <label>
+            <span>Title</span>
+            <input
+              value={draft.title || ""}
+              onChange={(event) =>
+                setDraft((current) => ({ ...current, title: event.target.value }))
+              }
+              aria-label={`${card.title} title`}
+            />
+          </label>
+          {card.type === "artifact" ? (
+            <>
+              <label>
+                <span>Upload</span>
+                <input
+                  accept="image/*,.pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.csv,.txt"
+                  onChange={(event) => handleFile(event.target.files?.[0])}
+                  type="file"
+                />
+              </label>
+              <label>
+                <span>Notes</span>
+                <textarea
+                  className="template-editor"
+                  value={draft.body || ""}
+                  onChange={(event) =>
+                    setDraft((current) => ({ ...current, body: event.target.value }))
+                  }
+                />
+              </label>
+            </>
+          ) : (
+            <label>
+              <span>{card.type === "note" ? "Note" : "Template"}</span>
+              <textarea
+                className="template-editor"
+                value={draft.body || ""}
+                onChange={(event) =>
+                  setDraft((current) => ({ ...current, body: event.target.value }))
+                }
+              />
+            </label>
+          )}
+        </div>
+      ) : (
+        <CustomCardDisplay card={card} />
+      )}
+    </article>
+  );
+}
+
+function CustomCardDisplay({ card }) {
+  return (
+    <div className="custom-card-display">
+      <h4>{card.title}</h4>
+      {card.type === "artifact" && card.fileData ? (
+        card.fileType?.startsWith("image/") ? (
+          <img className="artifact-preview" src={card.fileData} alt={card.fileName || card.title} />
+        ) : (
+          <a className="artifact-download" href={card.fileData} download={card.fileName}>
+            {card.fileName || "Download artifact"} <ExternalLink size={15} />
+          </a>
+        )
+      ) : null}
+      {card.body ? <p>{card.body}</p> : <p className="empty-card-text">No content yet.</p>}
+    </div>
   );
 }
 

@@ -277,6 +277,28 @@ a {
   max-width: 760px;
 }
 
+.custom-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.add-card-control {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.add-card-control select {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--navy);
+  font: inherit;
+  min-width: 220px;
+  padding: 9px 11px;
+}
+
 .copy-card,
 .resource-card,
 .member-card {
@@ -385,9 +407,58 @@ a {
   padding: 12px;
 }
 
+.template-edit-stack input[type="file"] {
+  padding: 10px;
+}
+
 .template-editor {
   min-height: 250px;
   resize: vertical;
+}
+
+.custom-card-display {
+  display: grid;
+  gap: 12px;
+}
+
+.custom-card-display h4 {
+  margin: 0;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.custom-card-display p {
+  color: #213a5f;
+  font-weight: 500;
+  line-height: 1.65;
+  margin: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.empty-card-text {
+  color: var(--muted);
+}
+
+.artifact-preview {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: block;
+  max-height: 280px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.artifact-download {
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--blue);
+  display: inline-flex;
+  gap: 8px;
+  padding: 12px;
+  width: fit-content;
 }
 
 .toolkit-split {
@@ -608,6 +679,7 @@ textarea {
   .hero-inner,
   .toolkit-split,
   .outreach-grid,
+  .custom-card-grid,
   .team-grid {
     grid-template-columns: 1fr;
   }

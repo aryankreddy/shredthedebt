@@ -41,8 +41,7 @@ const makeTeam = () =>
   teamNames.map((name) => ({
     id: name.toLowerCase(),
     name,
-    actionItems: ["", "", ""],
-    progress: ["", "", ""],
+    actionItems: ["", "", "", "", "", ""],
   }));
 
 const makeOutreachTracker = () =>
@@ -169,8 +168,11 @@ function normalizeState(parsed = {}) {
       const saved = Array.isArray(parsed.team) ? parsed.team[index] : null;
       return {
         ...member,
-        actionItems: saved?.actionItems || saved?.goals || member.actionItems,
-        progress: saved?.progress || member.progress,
+        actionItems: [
+          ...(saved?.actionItems || saved?.goals || []),
+          ...(saved?.progress || []),
+          ...member.actionItems,
+        ].slice(0, 6),
       };
     }),
     outreachTracker:
@@ -502,14 +504,6 @@ function App() {
                     values={member.actionItems}
                     onChange={(itemIndex, value) =>
                       updateTeam(memberIndex, "actionItems", value, itemIndex)
-                    }
-                  />
-                  <LineGroup
-                    label="Progress"
-                    tone="blue"
-                    values={member.progress}
-                    onChange={(itemIndex, value) =>
-                      updateTeam(memberIndex, "progress", value, itemIndex)
                     }
                   />
                 </article>
